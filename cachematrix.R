@@ -1,12 +1,10 @@
 ## Put comments here that give an overall description of what your
 ## functions do
 
-## Write a short comment describing this function
-
+# ----------
 # makeCacheMatrix 
 # Creates a list of 4 functions to manipulate a matrix and its inverse
 #   SET, GET, SETINVERSE, GETINVERSE
-
 makeCacheMatrix <- function(x = matrix()) {
     inv <- NULL
     # set and get the matrix
@@ -22,20 +20,39 @@ makeCacheMatrix <- function(x = matrix()) {
     list(set=set, get=get, setinverse=setinverse, getinverse=getinverse)
 }
 
-
-## Write a short comment describing this function
+# ----------
 # cacheSolve 
 # Returns the inverse of matrix, after checking cached matrix existence
-
 cacheSolve <- function(x, ...) {
+    # get inverse matrix
     inv <- x$getinverse()
-    # test existence inverse matrix
+    # test existence cached inverse matrix
     if(!is.null(inv)) {
         message("Cached inverse matrix") 
         return(inv)
     }
+
     zematrix <- x$get()
     inv <- solve(zematrix)
     x$setinverse(inv)
     inv
 }
+
+# Functions examples 
+#> x = rbind(c(1,2), c(3,4))
+#> m=makeCacheMatrix(x)
+#> m$get()
+#[,1] [,2]
+#[1,]    1    2
+#[2,]    3    4
+#> m$getinverse()
+#NULL
+#> cacheSolve(m) > 1st try
+#[,1] [,2]
+#[1,] -2.0  1.0
+#[2,]  1.5 -0.5
+#> cacheSolve(m) > 2nd try
+#Cached inverse matrix
+#[,1] [,2]
+#[1,] -2.0  1.0
+#[2,]  1.5 -0.5
